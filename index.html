@@ -1,3 +1,35 @@
 Hello here is shraa...
 i love teddys.
 dvcjdhcsvkjc xcksc
+
+
+import json
+
+def lambda_handler(event, context):
+    student_map = {
+        "001": "Mr. Rohan",
+        "002": "Ms. Kavita",
+        "003": "Mr. Mahesh"
+    }
+
+    # Get student_id from query parameters (important for Lambda Function URL)
+    student_id = event.get('queryStringParameters', {}).get('student_id')
+
+    if not student_id:
+        message = "Missing student_id in query parameters"
+    else:
+        name = student_map.get(student_id)
+        if name:
+            message = f"The student ID {student_id} is {name}"
+        else:
+            message = "Unknown student ID"
+
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'  # Optional: allows cross-origin requests
+        },
+        'body': json.dumps({'message': message})
+    }
+
